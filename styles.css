@@ -13,6 +13,8 @@ html, body {
     /* Ensures the body stretches fully into the notch areas */
     min-height: 100vh;
     min-height: 100dvh;
+    overflow: hidden; /* Hides all scrollbars and prevents standard scrolling */
+    touch-action: none; /* Prevents dragging/swiping to scroll on mobile touch screens */
 }
 /* Update your album-page class so its fallback matches its specific gradient */
 .album-page {
