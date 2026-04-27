@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     box-sizing: border-box;
     user-select: none; 
@@ -6,8 +6,11 @@
     transition: background-color 0.3s;
 }
 
-.hero{
-    height: 100dvh;
+/* ======== INDEX PAGE ======== */
+.hero {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for modern mobile */
+    width: 100%;
     display: flex;
     background: radial-gradient(circle at center, rgb(255, 136, 0) 0%, rgb(42, 23, 4) 100%);
     flex-direction: column;
@@ -17,14 +20,16 @@
     overflow: hidden;
 }
 
-.timebox{
+.timebox {
     display: flex;
     gap: 5vw;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
+    padding: 0 5vw;
 }
 
-.time h2{
+.time h2 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
     font-size: 10vw;
@@ -32,20 +37,6 @@
     display: inline-block;
     transform: scaleY(3);
     transform-origin: center;
-}
-
-
-@media (max-width: 480px) {
-    .timebox {
-        gap: 3vw;
-    }
-}
-
-.no-highlight {
-  user-select: none; 
-  -webkit-user-select: none; 
-  -khtml-user-select: none;
-  -webkit-touch-callout: none;
 }
 
 .album-btn {
@@ -70,11 +61,19 @@
     color: black;
 }
 
+.no-highlight {
+    user-select: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none;
+    -webkit-touch-callout: none;
+}
 
-
+/* ======== ALBUM PAGE ======== */
 .album-page {
     background: linear-gradient(135deg, rgb(158, 75, 8) 0%, rgb(78, 32, 12) 100%);
     min-height: 100vh; 
+    min-height: 100dvh;
+    width: 100%;
 }
 
 .tracks {
@@ -82,65 +81,81 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 75vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     justify-content: center;
+    width: 100%;
+    padding: 4vh 2vw;
 }
+
 .tracks h1 {
     font-weight: 900;
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
     letter-spacing: 0.02em;
-    padding: 2vh 2vw 1vh;
-    margin: 0;
+    padding: 0;
+    margin: 0 0 4vh 0;
 }
+
+.tracks > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 3vh;
+}
+
 .tracks h2 {
-    padding: 2.5vh 2vw;
+    padding: 0 0 1vh 0;
     margin: 0;
     text-align: center;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
 }
 
-@media (max-width: 1024px) {
+audio {
+    width: 80%;
+    max-width: 500px;
+    height: 40px;
+}
 
-    html, body {
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
+/* ======== MOBILE RESPONSIVENESS ======== */
+@media (max-width: 768px) {
+    /* Index Page Mobile */
+    .time h2 {
+        font-size: 16vw; /* Make countdown timer larger */
+    }
+    
+    .album-btn {
+        /* Center the button on mobile so it spans the bottom neatly */
+        bottom: 5vh;
+        right: 50%;
+        transform: translateX(50%);
+        width: 80%;
+        text-align: center;
     }
 
+    /* Album Page Mobile */
     .tracks {
-        height: 100vh;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.2vh;
-        padding: 1.5vh 4vw;
-        box-sizing: border-box;
+        justify-content: space-evenly; /* Evenly spreads the tracks out to fill the vertical height of the screen */
+        padding: 2vh 5vw;
     }
 
     .tracks h1 {
-        font-size: clamp(1.6rem, 5.5vw, 2.2rem);
-        margin: 0;
-        text-align: center;
-        line-height: 1.1;
-    }
-
-    .tracks h2 {
-        font-size: clamp(0.95rem, 3.8vw, 1.2rem);
-        margin: 0;
-        text-align: center;
-        line-height: 1.1;
-    }
-
-    audio {
-        width: 100%;
-        max-width: 340px;
-        height: 30px;
+        font-size: 3.5rem; /* Massive title */
+        margin-bottom: 0;
     }
 
     .tracks > div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.3vh;
+        width: 100%;
+        margin-bottom: 0; /* Let space-evenly handle the vertical gaps */
+    }
+
+    .tracks h2 {
+        font-size: 1.6rem; /* Enlarge track titles */
+    }
+
+    audio {
+        width: 100%; /* Stretch across the entire container width */
+        height: 54px; /* Taller player for easier touch control */
+        transform: scale(1.05); /* Slightly scales up the native play/volume icons */
     }
 }
