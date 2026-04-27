@@ -97,3 +97,50 @@
     margin: 0;
     text-align: center;
 }
+
+@media (max-width: 1024px) {
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .tracks {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2vh;
+        padding: 1.5vh 4vw;
+        box-sizing: border-box;
+    }
+
+    .tracks h1 {
+        font-size: clamp(1.6rem, 5.5vw, 2.2rem);
+        margin: 0;
+        text-align: center;
+        line-height: 1.1;
+    }
+
+    .tracks h2 {
+        font-size: clamp(0.95rem, 3.8vw, 1.2rem);
+        margin: 0;
+        text-align: center;
+        line-height: 1.1;
+    }
+
+    audio {
+        width: 100%;
+        max-width: 340px;
+        height: 30px;
+    }
+
+    .tracks > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3vh;
+    }
+}
