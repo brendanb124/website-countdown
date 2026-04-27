@@ -73,7 +73,7 @@
 
 
 .album-page {
-    background: linear-gradient(135deg, rgb(41, 61, 132) 0%, rgb(104, 21, 139) 100%);
+    background: linear-gradient(135deg, rgb(158, 75, 8) 0%, rgb(78, 32, 12) 100%);
     min-height: 100vh; 
 }
 
@@ -87,7 +87,6 @@
 }
 .tracks h1 {
     font-weight: 900;
-    font-style: italic;
     font-size: clamp(2rem, 5vw, 3.5rem);
     letter-spacing: 0.02em;
     padding: 2vh 2vw 1vh;
