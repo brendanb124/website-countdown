@@ -1,4 +1,4 @@
-\* {
+* {
     margin: 0;
     box-sizing: border-box;
     user-select: none; 
@@ -7,80 +7,20 @@
 }
 
 html, body {
-    /* Prevents the white flash on overscroll */
     background-color: rgb(42, 23, 4); 
-    
-    /* Ensures the body stretches fully into the notch areas */
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow: hidden; /* Hides all scrollbars and prevents standard scrolling */
-    touch-action: none; /* Prevents dragging/swiping to scroll on mobile touch screens */
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden; 
+    touch-action: none;
 }
-/* Update your album-page class so its fallback matches its specific gradient */
+
 .album-page {
-    background-color: rgb(42, 23, 4); /* Added fallback for Safari overscroll */
+    background-color: rgb(42, 23, 4); 
     background-image: linear-gradient(135deg, rgb(158, 75, 8) 0%, rgb(78, 32, 12) 100%);
-    min-height: 100vh; 
-    min-height: 100dvh;
+    height: 100vh; 
+    height: 100dvh;
     width: 100%;
-}
-
-.hero {
-    /* Change 'background' to 'background-image' to allow the body's solid color to sit underneath */
-    background-image: radial-gradient(circle at center, rgb(255, 136, 0) 0%, rgb(42, 23, 4) 100%);
-    /* ... keep the rest of your .hero styles exactly the same ... */
-    min-height: 100vh;
-    min-height: 100dvh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: rgba(0,0,0, 0.9);
     overflow: hidden;
-}
-/* ======== INDEX PAGE ======== */
-
-
-.timebox {
-    display: flex;
-    gap: 5vw;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    padding: 0 5vw;
-}
-
-.time h2 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
-    font-size: 10vw;
-    font-weight: 100;
-    display: inline-block;
-    transform: scaleY(3);
-    transform-origin: center;
-}
-
-.album-btn {
-    position: fixed;
-    bottom: 3vh;
-    right: 3vw;
-    z-index: 100;
-    background-color: rgba(0, 0, 0, 0.8);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: rgb(132, 76, 12);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.album-btn:hover {
-    background-color: rgb(132, 76, 12);
-    color: black;
 }
 
 .no-highlight {
@@ -90,27 +30,24 @@ html, body {
     -webkit-touch-callout: none;
 }
 
-/* ======== ALBUM PAGE ======== */
-
-
 .tracks {
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
-    min-height: 100dvh;
-    justify-content: center;
+    justify-content: space-evenly;
+    height: 100vh;
+    height: 100dvh;
     width: 100%;
-    padding: 4vh 2vw;
+    padding: 2vh 2vw;
 }
 
 .tracks h1 {
     font-weight: 900;
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     letter-spacing: 0.02em;
     padding: 0;
-    margin: 0 0 4vh 0;
+    margin: 0;
 }
 
 .tracks > div {
@@ -118,61 +55,38 @@ html, body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-bottom: 3vh;
+    margin-bottom: 0;
 }
 
 .tracks h2 {
-    padding: 0 0 1vh 0;
+    padding: 0 0 0.5vh 0;
     margin: 0;
     text-align: center;
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-variant-numeric: tabular-nums;
 }
 
 audio {
     width: 80%;
     max-width: 500px;
-    height: 40px;
+    height: 38px;
 }
 
-/* ======== MOBILE RESPONSIVENESS ======== */
 @media (max-width: 768px) {
-    /* Index Page Mobile */
-    .time h2 {
-        font-size: 16vw; /* Make countdown timer larger */
-    }
-    
-    .album-btn {
-        /* Center the button on mobile so it spans the bottom neatly */
-        bottom: 5vh;
-        right: 50%;
-        transform: translateX(50%);
-        width: 80%;
-        text-align: center;
-    }
-
-    /* Album Page Mobile */
     .tracks {
-        justify-content: space-evenly; /* Evenly spreads the tracks out to fill the vertical height of the screen */
-        padding: 2vh 5vw;
+        padding: 2vh 4vw;
     }
 
     .tracks h1 {
-        font-size: 3.5rem; /* Massive title */
-        margin-bottom: 0;
-    }
-
-    .tracks > div {
-        width: 100%;
-        margin-bottom: 0; /* Let space-evenly handle the vertical gaps */
+        font-size: 2.5rem; 
     }
 
     .tracks h2 {
-        font-size: 1.6rem; /* Enlarge track titles */
+        font-size: 1.15rem;
     }
 
     audio {
-        width: 100%; /* Stretch across the entire container width */
-        height: 54px; /* Taller player for easier touch control */
-        transform: scale(1.05); /* Slightly scales up the native play/volume icons */
+        width: 100%; 
+        height: 40px;
     }
 }
