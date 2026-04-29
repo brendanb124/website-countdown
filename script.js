@@ -4,7 +4,7 @@ const Minutes = document.getElementById('minutes');
 const Seconds = document.getElementById('seconds');
 const countdown = document.getElementById('countdown');
 
-const targetDate = new Date('April 30 2026 00:00:00').getTime();
+const targetDate = new Date('April 29 2026 20:00:00').getTime();
 
 function timer() {
     const now = Date.now();
