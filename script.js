@@ -1,8 +1,6 @@
-const timer5 = document.getElementById('timer5');
 const timer6 = document.getElementById('timer6');
 const timer7 = document.getElementById('timer7');
 
-const targetDate5 = new Date('April 30, 2026 22:00:00').getTime();
 const targetDate6 = new Date('May 7, 2026 22:00:00').getTime();
 const targetDate7 = new Date('May 7, 2026 22:00:00').getTime();
 
@@ -19,7 +17,6 @@ function formatTime(distance) {
 
 function updateTimers() {
     const now = Date.now();
-    if (timer5) timer5.textContent = "5. " + formatTime(targetDate5 - now);
     if (timer6) timer6.textContent = "6. " + formatTime(targetDate6 - now);
     if (timer7) timer7.textContent = "7. " + formatTime(targetDate7 - now);
 }
