@@ -1,5 +1,6 @@
+
+/*
 const timer6 = document.getElementById('timer6');
-const timer7 = document.getElementById('timer7');
 const timer8 = document.getElementById('timer8');
 const timer9 = document.getElementById('timer9');
 const targetDate = new Date('October 2, 2026 00:00:00').getTime();
@@ -18,12 +19,12 @@ function formatTime(distance) {
 function updateTimers() {
     const now = Date.now();
     if (timer6) timer6.textContent = "6. " + formatTime(targetDate - now);
-    if (timer7) timer7.textContent = "7. " + formatTime(targetDate - now);
     if (timer8) timer8.textContent = "8. " + formatTime(targetDate - now);
     if (timer9) timer9.textContent = "9. " + formatTime(targetDate - now);
 }
 updateTimers();
 setInterval(updateTimers, 1000);
+*/
 
 const tracks = document.querySelectorAll("audio");
 
@@ -37,8 +38,7 @@ tracks.forEach((track, index) => {
     });
 
     track.addEventListener("ended", () => {
-        if (index < tracks.length - 1) {
-            tracks[index + 1].play();
-        }
+        const nextIndex = (index + 1) % tracks.length;
+        tracks[nextIndex].play();
     });
 });
