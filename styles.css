@@ -15,8 +15,8 @@ html, body {
 }
 
 .album-page {
-    background-color: rgb(42, 23, 4); 
-    background-image: linear-gradient(135deg, rgb(158, 75, 8) 0%, rgb(78, 32, 12) 100%);
+    background-color: rgb(24, 74, 167); 
+    background-image: linear-gradient(135deg, rgb(18, 41, 143) 0%, rgb(112, 111, 199) 100%);
     height: 100vh; 
     height: 100dvh;
     width: 100%;
