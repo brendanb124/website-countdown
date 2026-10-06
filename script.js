@@ -26,22 +26,26 @@ updateTimers();
 setInterval(updateTimers, 1000);
 */
 
-const tracks = document.querySelectorAll(".track");
-const audioTracks = document.querySelectorAll("audio");
+const tracks = Array.from(document.querySelectorAll(".track"));
+const audios = tracks.map(track => track.querySelector("audio"));
+const playButtons = tracks.map(track => track.querySelector(".track-play"));
+const timeDisplays = tracks.map(track => track.querySelector(".track-time"));
+
 const mainPlay = document.getElementById("main-play");
-const previousButton = document.getElementById("previous");
-const nextButton = document.getElementById("next");
-const currentTitle = document.getElementById("current-title");
-const currentTime = document.getElementById("current-time");
-const duration = document.getElementById("duration");
-const progress = document.getElementById("progress");
+const previous = document.getElementById("previous");
+const next = document.getElementById("next");
 const volume = document.getElementById("volume");
+const progress = document.getElementById("progress");
+
+const currentTitle = document.getElementById("current-title");
+const currentTimeDisplay = document.getElementById("current-time");
+const durationDisplay = document.getElementById("duration");
 
 let currentIndex = -1;
 
 function formatTime(seconds) {
-    if (!Number.isFinite(seconds)) {
-        return "0:00";
+    if (!Number.isFinite(seconds) || seconds < 0) {
+        return "--:--";
     }
 
     const minutes = Math.floor(seconds / 60);
@@ -50,225 +54,263 @@ function formatTime(seconds) {
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
-function updateButtons() {
-    tracks.forEach((track, index) => {
-        const button = track.querySelector(".track-play");
+function setPlayIcon(element) {
+    element.innerHTML = '<span class="play-icon"></span>';
+}
 
-        if (index === currentIndex && !audioTracks[index].paused) {
-            button.textContent = "❚❚";
-        } else {
-            button.textContent = "▶";
-        }
+function setPauseIcon(element) {
+    element.innerHTML = '<span class="pause-icon"></span>';
+}
+
+function resetTrackButtons() {
+    playButtons.forEach(button => {
+        setPlayIcon(button);
+    });
+}
+
+function setActiveTrack(index) {
+    tracks.forEach((track, i) => {
+        track.classList.toggle("active", i === index);
     });
 
-    if (currentIndex !== -1 && !audioTracks[currentIndex].paused) {
-        mainPlay.textContent = "❚❚";
+    resetTrackButtons();
+
+    if (index >= 0) {
+        setPauseIcon(playButtons[index]);
+        playButtons[index].setAttribute("aria-label", "Pause");
+    }
+
+    playButtons.forEach((button, i) => {
+        if (i !== index) {
+            button.setAttribute("aria-label", `Play ${tracks[i].querySelector("h2").textContent}`);
+        }
+    });
+}
+
+function updateMainButton(isPlaying) {
+    if (isPlaying) {
+        setPauseIcon(mainPlay);
+        mainPlay.setAttribute("aria-label", "Pause");
     } else {
-        mainPlay.textContent = "▶";
+        setPlayIcon(mainPlay);
+        mainPlay.setAttribute("aria-label", "Play");
     }
 }
 
-function setCurrentTrack(index) {
-    if (index < 0 || index >= audioTracks.length) {
+function updatePlayer(index) {
+    if (index < 0) {
+        currentTitle.textContent = "Select a song";
+        currentTimeDisplay.textContent = "0:00";
+        durationDisplay.textContent = "0:00";
+        updateMainButton(false);
         return;
     }
 
-    audioTracks.forEach((audio, audioIndex) => {
-        if (audioIndex !== index) {
+    currentTitle.textContent = tracks[index].querySelector("h2").textContent;
+
+    const audio = audios[index];
+
+    currentTimeDisplay.textContent = formatTime(audio.currentTime);
+    durationDisplay.textContent = formatTime(audio.duration);
+}
+
+function loadTrack(index, autoplay = false) {
+    if (index < 0 || index >= tracks.length) {
+        return;
+    }
+
+    audios.forEach((audio, i) => {
+        if (i !== index) {
             audio.pause();
             audio.currentTime = 0;
         }
     });
 
-    tracks.forEach(track => {
-        track.classList.remove("active");
-    });
-
     currentIndex = index;
-    tracks[index].classList.add("active");
-    currentTitle.textContent = tracks[index].querySelector("h2").textContent;
+
+    const audio = audios[index];
+
+    audio.volume = Number(volume.value);
+
+    setActiveTrack(index);
+    updatePlayer(index);
 
     progress.value = 0;
-    currentTime.textContent = "0:00";
-    duration.textContent = formatTime(audioTracks[index].duration);
+    currentTimeDisplay.textContent = "0:00";
+    durationDisplay.textContent = formatTime(audio.duration);
 
-    updateButtons();
-}
-
-async function playCurrentTrack() {
-    if (currentIndex === -1) {
-        setCurrentTrack(0);
-    }
-
-    try {
-        await audioTracks[currentIndex].play();
-    } catch (error) {
-        console.log(error);
-    }
-
-    updateButtons();
-}
-
-function pauseCurrentTrack() {
-    if (currentIndex !== -1) {
-        audioTracks[currentIndex].pause();
-    }
-
-    updateButtons();
-}
-
-function toggleCurrentTrack() {
-    if (currentIndex === -1) {
-        setCurrentTrack(0);
-        playCurrentTrack();
-        return;
-    }
-
-    if (audioTracks[currentIndex].paused) {
-        playCurrentTrack();
+    if (autoplay) {
+        audio.play().then(() => {
+            updateMainButton(true);
+        }).catch(() => {
+            updateMainButton(false);
+        });
     } else {
-        pauseCurrentTrack();
+        updateMainButton(false);
     }
 }
 
-function playNextTrack() {
-    if (currentIndex === -1) {
-        setCurrentTrack(0);
+function togglePlay(index) {
+    const audio = audios[index];
+
+    if (currentIndex !== index) {
+        loadTrack(index, true);
+        return;
+    }
+
+    if (audio.paused) {
+        audio.play().then(() => {
+            setActiveTrack(index);
+            updateMainButton(true);
+        }).catch(() => {
+            updateMainButton(false);
+        });
     } else {
-        currentIndex = (currentIndex + 1) % audioTracks.length;
-        setCurrentTrack(currentIndex);
+        audio.pause();
+        updateMainButton(false);
+        setPlayIcon(playButtons[index]);
     }
-
-    playCurrentTrack();
 }
 
-function playPreviousTrack() {
-    if (currentIndex === -1) {
-        setCurrentTrack(0);
-        playCurrentTrack();
+function nextTrack() {
+    if (tracks.length === 0) {
         return;
     }
 
-    if (audioTracks[currentIndex].currentTime > 3) {
-        audioTracks[currentIndex].currentTime = 0;
+    const nextIndex = currentIndex < 0
+        ? 0
+        : (currentIndex + 1) % tracks.length;
+
+    loadTrack(nextIndex, true);
+}
+
+function previousTrack() {
+    if (tracks.length === 0) {
         return;
     }
 
-    currentIndex = (currentIndex - 1 + audioTracks.length) % audioTracks.length;
-    setCurrentTrack(currentIndex);
-    playCurrentTrack();
+    if (currentIndex < 0) {
+        loadTrack(0, true);
+        return;
+    }
+
+    const audio = audios[currentIndex];
+
+    if (audio.currentTime > 3) {
+        audio.currentTime = 0;
+        return;
+    }
+
+    const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+
+    loadTrack(previousIndex, true);
 }
 
 tracks.forEach((track, index) => {
-    const button = track.querySelector(".track-play");
+    const audio = audios[index];
 
-    track.addEventListener("click", event => {
-        if (event.target === button) {
+    playButtons[index].addEventListener("click", () => {
+        togglePlay(index);
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+        const duration = formatTime(audio.duration);
+
+        timeDisplays[index].textContent = duration;
+
+        if (currentIndex === index) {
+            durationDisplay.textContent = duration;
+        }
+    });
+
+    audio.addEventListener("durationchange", () => {
+        const duration = formatTime(audio.duration);
+
+        timeDisplays[index].textContent = duration;
+
+        if (currentIndex === index) {
+            durationDisplay.textContent = duration;
+        }
+    });
+
+    audio.addEventListener("timeupdate", () => {
+        if (currentIndex !== index) {
             return;
         }
 
-        if (currentIndex === index) {
-            toggleCurrentTrack();
-        } else {
-            setCurrentTrack(index);
-            playCurrentTrack();
-        }
-    });
+        const current = audio.currentTime;
+        const duration = audio.duration;
 
-    button.addEventListener("click", event => {
-        event.stopPropagation();
+        currentTimeDisplay.textContent = formatTime(current);
+        durationDisplay.textContent = formatTime(duration);
 
-        if (currentIndex === index) {
-            toggleCurrentTrack();
-        } else {
-            setCurrentTrack(index);
-            playCurrentTrack();
-        }
-    });
-});
-
-audioTracks.forEach((audio, index) => {
-    audio.volume = 1;
-
-    audio.addEventListener("loadedmetadata", () => {
-        tracks[index].querySelector(".track-time").textContent =
-            formatTime(audio.duration);
-
-        if (index === currentIndex) {
-            duration.textContent = formatTime(audio.duration);
+        if (Number.isFinite(duration) && duration > 0) {
+            progress.value = (current / duration) * 100;
         }
     });
 
     audio.addEventListener("play", () => {
-        currentIndex = index;
-        tracks[index].classList.add("active");
-        currentTitle.textContent = tracks[index].querySelector("h2").textContent;
-        updateButtons();
+        if (currentIndex === index) {
+            setActiveTrack(index);
+            updateMainButton(true);
+        }
     });
 
     audio.addEventListener("pause", () => {
-        updateButtons();
-    });
-
-    audio.addEventListener("timeupdate", () => {
-        if (index !== currentIndex) {
-            return;
+        if (currentIndex === index) {
+            updateMainButton(false);
+            setPlayIcon(playButtons[index]);
         }
-
-        if (audio.duration) {
-            progress.value = (audio.currentTime / audio.duration) * 100;
-        }
-
-        currentTime.textContent = formatTime(audio.currentTime);
-        duration.textContent = formatTime(audio.duration);
     });
 
     audio.addEventListener("ended", () => {
-        const nextIndex = (index + 1) % audioTracks.length;
-        setCurrentTrack(nextIndex);
-        playCurrentTrack();
+        const nextIndex = (index + 1) % tracks.length;
+        loadTrack(nextIndex, true);
+    });
+
+    audio.addEventListener("error", () => {
+        timeDisplays[index].textContent = "--:--";
     });
 });
 
-mainPlay.addEventListener("click", toggleCurrentTrack);
-nextButton.addEventListener("click", playNextTrack);
-previousButton.addEventListener("click", playPreviousTrack);
-
-progress.addEventListener("input", () => {
-    if (currentIndex === -1) {
+mainPlay.addEventListener("click", () => {
+    if (currentIndex < 0) {
+        loadTrack(0, true);
         return;
     }
 
-    const audio = audioTracks[currentIndex];
-
-    if (audio.duration) {
-        audio.currentTime = (progress.value / 100) * audio.duration;
-    }
+    togglePlay(currentIndex);
 });
+
+previous.addEventListener("click", previousTrack);
+
+next.addEventListener("click", nextTrack);
 
 volume.addEventListener("input", () => {
-    audioTracks.forEach(audio => {
-        audio.volume = volume.value;
+    const value = Number(volume.value);
+
+    audios.forEach(audio => {
+        audio.volume = value;
     });
 });
 
-document.addEventListener("keydown", event => {
-    if (event.target.tagName === "INPUT") {
+progress.addEventListener("input", () => {
+    if (currentIndex < 0) {
         return;
     }
 
-    if (event.code === "Space") {
-        event.preventDefault();
-        toggleCurrentTrack();
+    const audio = audios[currentIndex];
+
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+        return;
     }
 
-    if (event.code === "ArrowRight") {
-        playNextTrack();
-    }
-
-    if (event.code === "ArrowLeft") {
-        playPreviousTrack();
-    }
+    audio.currentTime = (Number(progress.value) / 100) * audio.duration;
 });
 
-updateButtons();
+audios.forEach(audio => {
+    audio.volume = 1;
+});
+
+resetTrackButtons();
+updatePlayer(-1);
