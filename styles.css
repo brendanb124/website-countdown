@@ -11,7 +11,7 @@ body {
     min-height: 100%;
     font-family: "Inter", sans-serif;
     color: white;
-    background: #17134f;
+    background: #0a0826;
 }
 
 body {
@@ -33,10 +33,10 @@ button {
     width: 100%;
     padding: 55px 30px 170px;
     background:
-        radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.8), transparent 38%),
-        radial-gradient(circle at 85% 25%, rgba(139, 92, 246, 0.75), transparent 40%),
-        radial-gradient(circle at 50% 90%, rgba(37, 99, 235, 0.7), transparent 45%),
-        linear-gradient(135deg, #10185c 0%, #392a91 48%, #6b46c1 100%);
+        radial-gradient(circle at 15% 15%, rgba(45, 27, 105, 0.85), transparent 38%),
+        radial-gradient(circle at 85% 25%, rgba(67, 34, 138, 0.75), transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(20, 20, 90, 0.8), transparent 45%),
+        linear-gradient(135deg, #07061a 0%, #171042 48%, #2d186b 100%);
 }
 
 .album-header {
@@ -58,9 +58,9 @@ button {
     justify-content: center;
     align-items: center;
     background:
-        linear-gradient(145deg, #4f46e5, #7c3aed 50%, #2563eb);
+        linear-gradient(145deg, #2d186b, #43228a 50%, #14145a);
     border-radius: 8px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
 }
 
 .art-glow {
@@ -68,7 +68,7 @@ button {
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
     filter: blur(30px);
 }
 
@@ -118,9 +118,10 @@ button {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    background: #000;
+    background: #050412;
     border-radius: 12px;
     padding: 14px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .track-list {
@@ -140,11 +141,11 @@ button {
 }
 
 .track:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .track.active {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .track-number {
@@ -276,8 +277,8 @@ button {
     bottom: 0;
     min-height: 105px;
     padding: 16px 30px calc(16px + env(safe-area-inset-bottom));
-    background: rgba(13, 13, 35, 0.92);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(8, 6, 26, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 }
@@ -339,7 +340,7 @@ button {
     width: 46px;
     height: 46px;
     background: white;
-    color: #17134f;
+    color: #0a0826;
 }
 
 .player-controls .main-play:hover {
@@ -356,6 +357,8 @@ button {
     align-items: center;
     gap: 8px;
     font-size: 13px;
+    font-weight: 600;
+    opacity: 0.85;
 }
 
 .player-volume input {
@@ -384,7 +387,7 @@ input[type="range"] {
     -webkit-appearance: none;
     height: 4px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }
 
@@ -409,9 +412,9 @@ input[type="range"]::-moz-range-thumb {
     .album-page {
         padding: 28px 14px 185px;
         background:
-            radial-gradient(circle at 20% 10%, rgba(79, 70, 229, 0.75), transparent 42%),
-            radial-gradient(circle at 90% 35%, rgba(139, 92, 246, 0.7), transparent 45%),
-            linear-gradient(160deg, #11185e 0%, #39288d 55%, #6145b3 100%);
+            radial-gradient(circle at 20% 10%, rgba(45, 27, 105, 0.8), transparent 42%),
+            radial-gradient(circle at 90% 35%, rgba(67, 34, 138, 0.75), transparent 45%),
+            linear-gradient(160deg, #07061a 0%, #171042 55%, #2d186b 100%);
     }
 
     .album-header {
